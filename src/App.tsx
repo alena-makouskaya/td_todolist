@@ -2,23 +2,24 @@ import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Todolist } from "./components/Todolist";
+import { v1 } from "uuid";
 
 export type FilterValueType = "all" | "active" | "compeled";
 
 function App() {
   let initialTasks = [
     {
-      id: 1,
+      id: v1(),
       title: "HTML",
       isDone: true,
     },
     {
-      id: 2,
+      id: v1(),
       title: "CSS",
       isDone: true,
     },
     {
-      id: 3,
+      id: v1(),
       title: "JS",
       isDone: false,
     },
@@ -26,7 +27,7 @@ function App() {
 
   let [tasks, setTask] = useState(initialTasks);
 
-  function removeTask(id: number) {
+  function removeTask(id: string) {
     let newTasks = tasks.filter((t) => t.id !== id);
     setTask(newTasks);
   }
@@ -47,9 +48,20 @@ function App() {
     filteredTasks = tasks.filter((t) => t.isDone === true)
   }
 
+  function addTask(title: string){
+    let newTask = {
+      id: v1(),
+      title: title,
+      isDone: false
+    }
+
+    let newTasks = [newTask, ...tasks];
+    setTask(newTasks);
+  }
+
   return (
     <div className="App">
-      <Todolist title="What to do?" tasks={filteredTasks} removeTask={removeTask} filterTask={filterTask} />
+      <Todolist title="What to do?" tasks={filteredTasks} removeTask={removeTask} filterTask={filterTask} addTask={addTask}/>
     </div>
   );
 }

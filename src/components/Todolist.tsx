@@ -1,7 +1,8 @@
+import { useState, ChangeEvent } from "react";
 import { FilterValueType } from "../App";
 
 type TaskPropsType = {
-  id: number;
+  id: string;
   title: string;
   isDone: boolean;
 };
@@ -9,15 +10,18 @@ type TaskPropsType = {
 type Todolist = {
   title: string;
   tasks: TaskPropsType[];
-  removeTask: (id: number) => void;
+  removeTask: (id: string) => void;
   filterTask: (value: FilterValueType) => void;
+  addTask: (title: string) => void
 };
 
 export function Todolist(props: Todolist) {
+  let [newTaskTitle, setnewTaskTitle] = useState("");
+
   const filterAllTask = () => {
     return props.filterTask("all");
   };
-  
+
   const filterActiveTask = () => {
     return props.filterTask("active");
   };
@@ -26,14 +30,26 @@ export function Todolist(props: Todolist) {
     return props.filterTask("compeled");
   };
 
+  const onChangeTaskHandler = (event:  ChangeEvent<HTMLInputElement>) => {
+    setnewTaskTitle(event.currentTarget.value);
+    
+  };
+
+  const addTask = () => {
+    props.addTask(newTaskTitle);
+    setnewTaskTitle("");
+  }
 
   return (
     <div className="tdl-card">
       <h3>What to do?</h3>
 
       <div>
-        <input />
-        <button> Add + </button>
+        <input
+          onChange={onChangeTaskHandler}
+          value={newTaskTitle}
+        />
+        <button onClick={addTask}> Add + </button>
       </div>
 
       <ul>
