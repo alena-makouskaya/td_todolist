@@ -40,28 +40,46 @@ function App() {
     setFilter(value);
   }
 
-  if(filter === "active") {
-    filteredTasks = tasks.filter((t) => t.isDone === false)
+  if (filter === "active") {
+    filteredTasks = tasks.filter((t) => t.isDone === false);
   }
 
-  if(filter === "compeled") {
-    filteredTasks = tasks.filter((t) => t.isDone === true)
+  if (filter === "compeled") {
+    filteredTasks = tasks.filter((t) => t.isDone === true);
   }
 
-  function addTask(title: string){
+  function addTask(title: string) {
     let newTask = {
       id: v1(),
       title: title,
-      isDone: false
-    }
+      isDone: false,
+    };
 
     let newTasks = [newTask, ...tasks];
     setTask(newTasks);
   }
 
+  function changeStatus(taskId: string, isDone: boolean) {
+    let task = tasks.find((t) => t.id === taskId);
+
+    if (task) {
+      task.isDone = isDone;
+    }
+
+    setTask([...tasks]);
+  }
+
   return (
     <div className="App">
-      <Todolist title="What to do?" tasks={filteredTasks} removeTask={removeTask} filterTask={filterTask} addTask={addTask}/>
+      <Todolist
+        title="What to do?"
+        tasks={filteredTasks}
+        removeTask={removeTask}
+        filterTask={filterTask}
+        addTask={addTask}
+        changeStatus={changeStatus}
+        filter={filter}
+      />
     </div>
   );
 }
